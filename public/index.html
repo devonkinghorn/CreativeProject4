@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
+	<script src="app.js"></script>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<meta charset="utf-8">
+	<title>Node api tutorial</title>
+</head>
+
+<body>
+
+	<div id='app' ng-app='app' ng-controller='mainCtrl'>
+		<div class='header'>
+			<h1 class='h1 center stretch'>
+				Class Finder
+			</h1>
+			<div ng-if='!classes.length' class='center info'>
+				<p>Add whatever classes you want and when you submit this will call the Node.js server to find the perfect schedule for
+					you. The server server uses something called a Promise to make multiple http requests at once, when they finish it finds
+					the best schedule for you. This is meant take away the burdon from using the <a href='http://saasta.byu.edu/noauth/classSchedule/index.php'>BYU class scheduler</a>.
+					The department names for below can be found at the <a href='http://saasta.byu.edu/noauth/classSchedule/index.php'>BYU class scheduler</a>,
+					be cautious about white space and capitalization. Computer Science should be "C S" (without quotes).</p>
+			</div>
+		</div>
+		<form ng-submit="addClass()" style="margin-top30px;">
+			Department: <input type="text" ng-model="formDepartment"></input>
+			Class Number: <input type="text" ng-model="formClassNumber"></input>
+			<button type="submit">Add Class</button>
+		</form>
+		<div class='inputClasses'>
+			<div ng-if='classes.length > 0'>
+				<div ng-repeat='class in classes'>
+					{{ class.department + ' ' + class.classNumber}}
+				</div>
+			</div>
+			<form ng-submit='getClasses()'>
+				<button type="submit" class='b'>Submit</button>
+
+			</form>
+		</div>
+		<div ng-if='schedules.length' class='results'>
+			<div ng-repeat='class in schedules[viewIndex]' class='result'>
+				<div class='inline'>{{class.department}}: {{class.classNumber}} {{class.title}}, Instructor: {{class.instructor}}, <br>Seats Open: {{class.seatsAvail + ", "}} Waitlist length: {{class.waitlist}}
+
+				</div>
+				<div class='clearBoth '>
+
+					<li ng-repeat='meeting in class.meeting' class=''>
+						Meets: {{meeting.startTime}} {{meeting.endTime}} {{meeting.daysOfWeek.join('')}} {{meeting.location}}
+					</li>
+				</div>
+			</div>
+		</div>
+		<button ng-click='changeSchedule(-1)'>Previous Schedule</button>
+		<button ng-click='changeSchedule(1)'>Next Schedule</button>
+</body>
+
+</html>
