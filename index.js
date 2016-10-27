@@ -86,4 +86,3 @@ app.listen(8080, () => {
 // let classes = { 'C S': JSON.parse(fs.readFileSync('./csclasses.txt'))}
 // let j = getBestSchedule(desiredClasses, classes);
 // console.log(j)
-
